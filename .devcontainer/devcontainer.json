@@ -16,6 +16,11 @@
         "ghcr.io/devcontainers/features/node:1": {
             "version": "16",
             "nodeGypDependencies": false
+        },
+        "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+            "version": "latest",
+            "helm": "latest",
+            "minikube": "none"
         }
     },
     "customizations": {
@@ -29,14 +34,13 @@
                 "esbenp.prettier-vscode",
                 "eg2.vscode-npm-script",
                 "dbaeumer.vscode-eslint",
-                "ms-azuretools.vscode-azurefunctions"
+                "ms-azuretools.vscode-azurefunctions",
+                "ms-kubernetes-tools.vscode-kubernetes-tools",
+                "ms-kubernetes-tools.vscode-aks-tools"
             ]
         }
     },
-    "forwardPorts": [
-        3000,
-        3100
-    ],
+    "forwardPorts": [3000, 3100],
     "postCreateCommand": "",
     "remoteUser": "vscode",
     "hostRequirements": {

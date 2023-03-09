@@ -17,7 +17,19 @@ export const createApp = async (): Promise<Express> => {
     await configureMongoose(config.database);
     // Middleware
     app.use(express.json());
-    app.use(cors());
+
+    var apiUrl = process.env.REACT_APP_WEB_BASE_URL;
+    if (apiUrl != ""){
+        app.use(cors({
+            origin: ["https://portal.azure.com",
+            "https://ms.portal.azure.com",
+            apiUrl]
+        }));
+    }
+    else{
+        app.use(cors());
+        console.log("Setting CORS = * (allow all origins) because env var REACT_APP_WEB_BASE_URL has not a value or is not set.");
+    }
 
     // API Routes
     app.use("/lists/:listId/items", items);

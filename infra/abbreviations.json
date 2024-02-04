@@ -6,6 +6,7 @@
     "appContainerApps": "ca-",
     "authorizationPolicyDefinitions": "policy-",
     "automationAutomationAccounts": "aa-",
+    "azureAppConfigurationStores": "appcs-",
     "blueprintBlueprints": "bp-",
     "blueprintBlueprintsArtifacts": "bpa-",
     "cacheRedis": "redis-",

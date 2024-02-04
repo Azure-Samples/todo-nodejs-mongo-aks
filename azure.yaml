@@ -3,6 +3,11 @@
 name: todo-nodejs-mongo-aks
 metadata:
   template: todo-nodejs-mongo-aks@0.0.1-beta
+hooks:
+  predeploy:
+    interactive: false
+    shell: sh
+    run: chmod +x infra/hooks/predeploy.sh && infra/hooks/predeploy.sh # installs additional components on the cluster
 services:
   web:
     project: ./src/web

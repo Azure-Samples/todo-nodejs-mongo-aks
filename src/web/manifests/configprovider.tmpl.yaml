@@ -12,9 +12,3 @@ spec:
     selectors:
       - keyFilter: "*"
         labelFilter: todo-web
-    refresh:
-      enabled: true
-      monitoring:
-        keyValues:
-        - key: REACT_APP_APPLICATIONINSIGHTS_CONNECTION_STRING
-          label: todo-web

@@ -12,17 +12,3 @@ spec:
     selectors:
       - keyFilter: "*"
         labelFilter: todo-api
-    refresh:
-      enabled: true
-      monitoring:
-        keyValues:
-        - key: APPLICATIONINSIGHTS_CONNECTION_STRING
-          label: todo-api
-  secret:
-    target:
-      secretName: todo-api-secret
-    auth:
-      managedIdentityClientId: {{.Env.AZURE_AKS_IDENTITY_CLIENT_ID}}
-    refresh:
-      enabled: true
-      interval: 10m

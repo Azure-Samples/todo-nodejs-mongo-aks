@@ -24,7 +24,7 @@ param applicationInsightsName string = ''
 param cosmosAccountName string = ''
 param cosmosDatabaseName string = ''
 param keyVaultName string = ''
-param azureAppConfigStoreName string = ''
+param configStoreName string = ''
 param logAnalyticsName string = ''
 param resourceGroupName string = ''
 
@@ -80,38 +80,6 @@ module keyVault './core/security/keyvault.bicep' = {
   }
 }
 
-// Manage configuration in Azure App Configuration
-module azappconfig './core/config/azure-appconfig.bicep' = {
-  name: 'azappconfig'
-  scope: rg
-  params: {
-    name: !empty(azureAppConfigStoreName) ? azureAppConfigStoreName : '${abbrs.azureAppConfigurationStores}${resourceToken}'
-    location: location
-    tags: tags
-    keyValueNames: [
-      'REACT_APP_APPLICATIONINSIGHTS_CONNECTION_STRING$todo-web'
-      'APPLICATIONINSIGHTS_CONNECTION_STRING$todo-api'
-      'AZURE_COSMOS_DATABASE_NAME$todo-api'
-    ]
-    keyValueValues: [
-      monitoring.outputs.applicationInsightsConnectionString
-      monitoring.outputs.applicationInsightsConnectionString
-      cosmos.outputs.databaseName
-    ]
-    keyVaultURI: keyVault.outputs.endpoint
-  }
-}
-
-// Access to Azure App Configuration
-module azappconfigRoleAssignment './core/config/role-assignment.bicep' = {
-  name: 'azappconfig-role-assignment'
-  scope: rg
-  params: {
-    configStoreName: !empty(azureAppConfigStoreName) ? azureAppConfigStoreName : '${abbrs.azureAppConfigurationStores}${resourceToken}'
-    principalId: aks.outputs.clusterIdentity.objectId
-  }
-}
-
 // Monitor application with Azure Monitor
 module monitoring './core/monitor/monitoring.bicep' = {
   name: 'monitoring'
@@ -125,20 +93,42 @@ module monitoring './core/monitor/monitoring.bicep' = {
   }
 }
 
+// Manage configuration in Azure App Configuration
+module azappconfig './core/config/configstore.bicep' = {
+  name: 'azappconfig'
+  scope: rg
+  params: {
+    name: !empty(configStoreName) ? configStoreName : '${abbrs.appConfigurationStores}${resourceToken}'
+    location: location
+    tags: tags
+    keyValueNames: [
+      'AZURE_AKS_IDENTITY_CLIENT_ID$$todo-ap'
+      'AZURE_KEY_VAULT_ENDPOINT$todo-api'
+      'APPLICATIONINSIGHTS_CONNECTION_STRING$todo-api'
+      'REACT_APP_APPLICATIONINSIGHTS_CONNECTION_STRING$todo-web'
+    ]
+    keyValueValues: [
+      aks.outputs.clusterIdentity.clientId
+      keyVault.outputs.endpoint
+      monitoring.outputs.applicationInsightsConnectionString
+      monitoring.outputs.applicationInsightsConnectionString
+    ]
+    principalId: aks.outputs.clusterIdentity.objectId
+  }
+}
+
 // Data outputs
 output AZURE_COSMOS_CONNECTION_STRING_KEY string = cosmos.outputs.connectionStringKey
 output AZURE_COSMOS_DATABASE_NAME string = cosmos.outputs.databaseName
 
 // App outputs
-output APPLICATIONINSIGHTS_CONNECTION_STRING string = monitoring.outputs.applicationInsightsConnectionString
 output AZURE_KEY_VAULT_ENDPOINT string = keyVault.outputs.endpoint
 output AZURE_KEY_VAULT_NAME string = keyVault.outputs.name
 output AZURE_LOCATION string = location
 output AZURE_TENANT_ID string = tenant().tenantId
-output AZURE_RESOURCE_GROUP string = rg.name
 output AZURE_AKS_CLUSTER_NAME string = aks.outputs.clusterName
 output AZURE_AKS_IDENTITY_CLIENT_ID string = aks.outputs.clusterIdentity.clientId
 output AZURE_APP_CONFIGURATION_ENDPOINT string = azappconfig.outputs.endpoint
 output AZURE_CONTAINER_REGISTRY_ENDPOINT string = aks.outputs.containerRegistryLoginServer
 output AZURE_CONTAINER_REGISTRY_NAME string = aks.outputs.containerRegistryName
-output REACT_APP_APPLICATIONINSIGHTS_CONNECTION_STRING string = monitoring.outputs.applicationInsightsConnectionString
+

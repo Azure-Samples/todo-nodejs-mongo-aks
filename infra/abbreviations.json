@@ -1,11 +1,11 @@
 {
     "analysisServicesServers": "as",
     "apiManagementService": "apim-",
-    "appConfigurationConfigurationStores": "appcs-",
     "appManagedEnvironments": "cae-",
     "appContainerApps": "ca-",
     "authorizationPolicyDefinitions": "policy-",
     "automationAutomationAccounts": "aa-",
+    "azureAppConfigurationStores": "appcs-",
     "blueprintBlueprints": "bp-",
     "blueprintBlueprintsArtifacts": "bpa-",
     "cacheRedis": "redis-",

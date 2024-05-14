@@ -30,11 +30,54 @@ jobs:
 
       - name: Install azd
         uses: Azure/setup-azd@v1.0.0
-      
+
       - name: Install Nodejs
         uses: actions/setup-node@v4
         with:
           node-version: 18
+
+      # Required if not installed in base image
+      - name: Install kubectl
+        uses: Azure/setup-kubectl@v3
+
+      # Required if deploying Helm charts with Azd and not already installed in base image
+      - name: Install Helm
+        uses: azure/setup-helm@v4.2.0
+
+      # Required if deploying with Kustomize and not already installed in base image
+      - name: Install Kustomize
+        uses: syntaqx/setup-kustomize@v1
+
+      # Required if using Azure RBAC with Azd
+      - name: Install Kubelogin
+        uses: Azure/use-kubelogin@v1
+        with:
+          kubelogin-version: "v0.1.3"
+
+      - name: Show Tool Versions
+        run: |
+          echo "=================== azd version ==================="
+          azd version
+
+          echo "=================== kubctl version ==================="
+          kubectl version --client --output yaml
+
+          echo "=================== helm version ==================="
+          helm version --short
+
+          echo "=================== kustomize version ==================="
+          kustomize version
+
+          echo "=================== kubelogin version ==================="
+          kubelogin --version
+        shell: pwsh
+
+      # Required if using alpha AKS features for Helm or Kustomize
+      - name: Configure Azd
+        run: |
+          azd config set alpha.aks.helm on
+          azd config set alpha.aks.kustomize on
+        shell: pwsh
 
       - name: Log in with Azure (Federated Credentials)
         if: ${{ env.AZURE_CLIENT_ID != '' }}

@@ -30,25 +30,6 @@ steps:
     displayName: Configure AZD to Use AZ CLI Authentication.
 
   - task: AzureCLI@2
-    displayName: Install Kubelogin
-    inputs:
-      azureSubscription: azconnection
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
-        az aks install-cli
-
-  - task: AzureCLI@2
-    displayName: Configure Azd Alpha Features
-    inputs:
-      azureSubscription: azconnection
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
-        azd config set alpha.aks.helm on
-        azd config set alpha.aks.kustomize on
-
-  - task: AzureCLI@2
     displayName: Provision Infrastructure
     inputs:
       azureSubscription: azconnection

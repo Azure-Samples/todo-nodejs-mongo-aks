@@ -13,9 +13,9 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-  - task: setup-azd@0 
+  - task: setup-azd@0
     displayName: Install azd
-
+  
   # If you can't install above task in your organization, you can comment it and uncomment below task to install azd
   # - task: Bash@3
   #   displayName: Install azd
@@ -29,24 +29,11 @@ steps:
       azd config set auth.useAzCliAuth "true"
     displayName: Configure AZD to Use AZ CLI Authentication.
 
-  - task: AzureCLI@2
-    displayName: Install Kubelogin
+  - task: JavaToolInstaller@0
     inputs:
-      azureSubscription: azconnection
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
-        az aks install-cli
-
-  - task: AzureCLI@2
-    displayName: Configure Azd Alpha Features
-    inputs:
-      azureSubscription: azconnection
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
-        azd config set alpha.aks.helm on
-        azd config set alpha.aks.kustomize on
+      versionSpec: '17'
+      jdkArchitectureOption: 'x64'
+      jdkSourceOption: 'PreInstalled'
 
   - task: AzureCLI@2
     displayName: Provision Infrastructure

@@ -29,6 +29,28 @@ steps:
       azd config set auth.useAzCliAuth "true"
     displayName: Configure AZD to Use AZ CLI Authentication.
 
+  # Required if not installed in base image
+  - task: KubectlInstaller@0
+    displayName: Install Kubectl
+
+  # Required if deploying Helm charts with Azd and not already installed in base image
+  - task: HelmInstaller@1
+    displayName: Install Helm
+
+  # Required if using Azure RBAC with Azd
+  - task: KubeloginInstaller@0
+    displayName: Install Kubelogin
+
+  - task: AzureCLI@2
+    displayName: Configure Azd Alpha Features
+    inputs:
+      azureSubscription: azconnection
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        azd config set alpha.aks.helm on
+        azd config set alpha.aks.kustomize on
+
   - task: AzureCLI@2
     displayName: Provision Infrastructure
     inputs:
@@ -41,6 +63,7 @@ steps:
       AZURE_SUBSCRIPTION_ID: $(AZURE_SUBSCRIPTION_ID)
       AZURE_ENV_NAME: $(AZURE_ENV_NAME)
       AZURE_LOCATION: $(AZURE_LOCATION)
+      AZURE_PRINCIPAL_TYPE: $(AZURE_PRINCIPAL_TYPE)
 
   - task: AzureCLI@2
     displayName: Deploy Application

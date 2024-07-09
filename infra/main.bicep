@@ -279,10 +279,12 @@ module keyVault 'br/public:avm/res/key-vault/vault:0.3.5' = {
   scope: rg
   params: {
     name: !empty(keyVaultName) ? keyVaultName : '${abbrs.keyVaultVaults}${resourceToken}'
-    enablePurgeProtection: false
     location: location
     tags: tags
     enableRbacAuthorization: false
+    enableVaultForDeployment: false
+    enableVaultForTemplateDeployment: false
+    sku: 'standard'
     accessPolicies: [
       {
         objectId: managedCluster.outputs.kubeletIdentityObjectId

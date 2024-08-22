@@ -65,7 +65,7 @@ azd init --template Azure-Samples/todo-nodejs-mongo-aks
 azd up
 ```
 
-> Note: If you are running on an internal sub, then you need to test this from a devbox. Here's the error you'll receive if you attempt to run outside of a devbox:
+> Note: If you are running on an internal sub, then you need to test this from a DevBox. Here's the error you'll receive if you attempt to run outside of a DevBox:
 !["Screenshot of error page"](assets/errorpage.png)
 
 #### Optional Configuration

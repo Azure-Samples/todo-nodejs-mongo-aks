@@ -246,7 +246,7 @@ module containerRegistry 'br/public:avm/res/container-registry/registry:0.1.1' =
 }
 
 // The application database
-module cosmos 'br/public:avm/res/document-db/database-account:0.5.1' = {
+module cosmos 'br/public:avm/res/document-db/database-account:0.6.0' = {
   name: 'cosmos'
   scope: rg
   params: {
@@ -266,8 +266,8 @@ module cosmos 'br/public:avm/res/document-db/database-account:0.5.1' = {
         collections: collections
       }
     ]
-    secretsKeyVault: {
-      keyVaultName: keyVault.outputs.name
+    secretsExportConfiguration:{
+      keyVaultResourceId: keyVault.outputs.resourceId
       primaryWriteConnectionStringSecretName: connectionStringKey
     }
   }

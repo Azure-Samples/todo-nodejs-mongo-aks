@@ -146,7 +146,7 @@ module managedCluster 'br/public:avm/res/container-service/managed-cluster:0.1.7
       )
     ]
     skuTier: 'Free'
-    kubernetesVersion: '1.27.9'
+    kubernetesVersion: '1.29'
     location: location
     networkPlugin: 'azure'
     networkPolicy: 'azure'

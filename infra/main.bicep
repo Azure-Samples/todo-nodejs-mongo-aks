@@ -65,6 +65,7 @@ module aks 'br/public:avm/ptn/azd/aks:0.2.0' = {
     systemPoolSize: systemPoolType
     disableLocalAccounts: false
     aadProfile: null
+    kubernetesVersion: '1.33.5'
   }
 }
 
